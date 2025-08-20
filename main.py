@@ -1,21 +1,14 @@
 from fastapi import FastAPI
-from server.gunicorn_server import GunicornServer
-from controller import news
+from controller import noticias
 
 app = FastAPI(
-    title="News Web Crawler",
-    version="0.1",
-    description="API to get news from web."
+    title="Ceará Científico - API de Notícias Climáticas",
+    version="1.0",
+    description="API para extrair e analisar notícias sobre mudanças climáticas."
 )
 
-app.include_router(news.router)
+app.include_router(noticias.router)
 
 if __name__ == '__main__':
-    options = {
-        'bind': '{}:{}'.format('0.0.0.0', '8080'),
-        'workers': 1,
-        'worker_class': 'uvicorn.workers.UvicornWorker',
-        'timeout': 600
-    }
-
-    GunicornServer(app, options).run()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)
